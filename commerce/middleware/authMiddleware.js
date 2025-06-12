@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const authenticate = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
-  // Check for Bearer token
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ message: 'Authorization token missing or invalid' });
   }
@@ -12,7 +11,7 @@ const authenticate = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
-    req.user = decoded; // Attach decoded user info to request
+    req.user = decoded;
     next();
   } catch (err) {
     console.error('Token verification failed:', err.message);
