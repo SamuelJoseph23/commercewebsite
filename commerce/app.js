@@ -3,6 +3,9 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
+const cartRoutes = require('./routes/cartRoutes');
+app.use('/api/cart', cartRoutes);
+
 
 const authRoutes = require('./routes/authRoutes');
 // Add other routers as needed (products, cart, orders)
