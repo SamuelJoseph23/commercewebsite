@@ -38,7 +38,7 @@ const Home = () => {
           <Button variant="outlined" color="primary" onClick={() => navigate('/products')}>
             Browse Products
           </Button>
-          <Button variant="outlined" color="secondary" onClick={() => navigate('/cart')}>
+          <Button variant="outlined" color="primary" onClick={() => navigate('/cart')}>
             Go to Cart
           </Button>
         </Box>

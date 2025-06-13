@@ -1,4 +1,3 @@
-// src/pages/Cart.js
 import React from 'react';
 import {
   Container,
@@ -18,19 +17,18 @@ import { useCart } from '../contexts/CartContext';
 const Cart = () => {
   const { cartItems, addToCart, removeFromCart } = useCart();
 
-  // Total = sum(price * quantity)
+  // ✅ Correct total: sum of (price * quantity)
   const total = cartItems.reduce(
-    (sum, item) => sum + item.price * (item.quantity || 1),
+    (sum, item) => sum + Number(item.price) * (item.quantity || 1),
     0
   );
 
   const handleQuantityChange = (item, qty) => {
     const quantity = parseInt(qty, 10);
-    if (quantity <= 0) {
+    if (quantity <= 0 || isNaN(quantity)) {
       removeFromCart(item.id);
     } else {
-      // Reset with new quantity
-      // Simple implementation: remove then re-add
+      // Re-add the item with updated quantity
       removeFromCart(item.id);
       addToCart({ ...item, quantity });
     }
@@ -38,7 +36,10 @@ const Cart = () => {
 
   return (
     <Container sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom color="primary">Your Cart</Typography>
+      <Typography variant="h4" gutterBottom color="primary">
+        Your Cart
+      </Typography>
+
       {cartItems.length === 0 ? (
         <Typography>Your cart is empty.</Typography>
       ) : (
@@ -55,7 +56,7 @@ const Cart = () => {
                 >
                   <ListItemText
                     primary={item.name}
-                    secondary={`₹${item.price.toFixed(2)}`}
+                    secondary={`₹${Number(item.price).toFixed(2)} each`}
                   />
                   <Box sx={{ ml: 2 }}>
                     <TextField
@@ -73,15 +74,15 @@ const Cart = () => {
             ))}
           </List>
 
-          <Box sx={{ mt: 2, textAlign: 'right' }}>
+          <Box sx={{ mt: 3, textAlign: 'right' }}>
             <Typography variant="h6">
               Total: ₹{total.toFixed(2)}
             </Typography>
             <Button
               variant="contained"
               color="secondary"
-              sx={{ mt: 1 }}
-              onClick={() => alert('Proceed to checkout')}
+              sx={{ mt: 2 }}
+              onClick={() => alert('Proceeding to checkout...')}
             >
               Checkout
             </Button>
