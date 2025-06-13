@@ -1,32 +1,23 @@
-import { useContext, useEffect, useState } from 'react';
-import { CartContext } from '../context/CartContext';
+import React from 'react';
+import { useCart } from '../contexts/CartContext';
 import CartItem from '../components/CartItem';
-import { Link } from 'react-router-dom';
 
 const Cart = () => {
-  const { cartItems, loading, getCartTotal } = useContext(CartContext);
+  const { cartItems } = useCart();
 
-  if (loading) return <div>Loading cart...</div>;
+  const total = cartItems.reduce((sum, item) => sum + item.price, 0);
 
   return (
-    <div className="cart-page">
-      <h1>Your Shopping Cart</h1>
+    <div>
+      <h2>Your Cart</h2>
       {cartItems.length === 0 ? (
-        <div className="empty-cart">
-          <p>Your cart is empty</p>
-          <Link to="/products" className="btn">Browse Products</Link>
-        </div>
+        <p>Your cart is empty.</p>
       ) : (
         <>
-          <div className="cart-items">
-            {cartItems.map(item => (
-              <CartItem key={item.id} item={item} />
-            ))}
-          </div>
-          <div className="cart-summary">
-            <h3>Total: ${getCartTotal().toFixed(2)}</h3>
-            <Link to="/checkout" className="btn">Proceed to Checkout</Link>
-          </div>
+          {cartItems.map((item) => (
+            <CartItem key={item.id} item={item} />
+          ))}
+          <h3>Total: ₹{total}</h3>
         </>
       )}
     </div>

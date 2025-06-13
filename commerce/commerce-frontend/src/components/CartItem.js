@@ -1,19 +1,14 @@
-import { useContext } from 'react';
-import { CartContext } from '../context/CartContext';
+import React from 'react';
+import { useCart } from '../contexts/CartContext';
 
 const CartItem = ({ item }) => {
-  const { removeFromCart } = useContext(CartContext);
+  const { removeFromCart } = useCart();
 
   return (
     <div className="cart-item">
-      <img src={item.image || '/placeholder-product.jpg'} alt={item.name} />
-      <div>
-        <h4>{item.name}</h4>
-        <p>${item.price.toFixed(2)} × {item.quantity}</p>
-        <button onClick={() => removeFromCart(item.product_id)}>
-          Remove
-        </button>
-      </div>
+      <h4>{item.name}</h4>
+      <p>₹{item.price}</p>
+      <button onClick={() => removeFromCart(item.id)}>Remove</button>
     </div>
   );
 };

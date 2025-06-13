@@ -1,30 +1,28 @@
-import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { CartContext } from '../context/CartContext';
-import api from '../services/api';
+import React from 'react';
+import { useCart } from '../contexts/CartContext';
 
 const Checkout = () => {
-  const { cartItems, getCartTotal, clearCart } = useContext(CartContext);
-  const navigate = useNavigate();
+  const { cartItems } = useCart();
 
-  const handleCheckout = async () => {
-    try {
-      await api.post('/orders/checkout');
-      clearCart();
-      navigate('/orders');
-    } catch (error) {
-      alert('Checkout failed');
-    }
+  const handleCheckout = () => {
+    alert('Checkout functionality coming soon!');
   };
 
   return (
-    <div className="checkout">
+    <div>
       <h2>Checkout</h2>
-      <div className="order-summary">
-        <h3>Order Summary</h3>
-        <p>Total: ${getCartTotal().toFixed(2)}</p>
-        <button onClick={handleCheckout}>Place Order</button>
-      </div>
+      {cartItems.length === 0 ? (
+        <p>No items in cart to checkout.</p>
+      ) : (
+        <div>
+          {cartItems.map((item) => (
+            <div key={item.id}>
+              <p>{item.name} - ₹{item.price}</p>
+            </div>
+          ))}
+          <button onClick={handleCheckout}>Confirm Order</button>
+        </div>
+      )}
     </div>
   );
 };
