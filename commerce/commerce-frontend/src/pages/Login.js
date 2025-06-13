@@ -11,7 +11,6 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
-import { useAuth } from '../contexts/AuthContext'; // ✅ Added
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +20,6 @@ const Login = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { setUser } = useAuth(); // ✅ Get from context
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -36,8 +34,7 @@ const Login = () => {
       const response = await api.post('/auth/login', formData);
       if (response.status === 200) {
         localStorage.setItem('token', response.data.token);
-        setUser(response.data.user); // ✅ Save user in context
-        navigate('/'); // ✅ Redirect after login
+        navigate('/');
       } else {
         setError(response.data.message || 'Login failed');
       }
