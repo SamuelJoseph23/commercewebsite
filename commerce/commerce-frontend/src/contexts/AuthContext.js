@@ -6,19 +6,17 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  const fetchProfile = async () => {
-    try {
-      const res = await api.get('/auth/profile');
-      setUser(res.data);
-    } catch (err) {
-      setUser(null);
-      localStorage.removeItem('token');
-    }
-  };
-
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) fetchProfile();
+    if (token) {
+      api.get('/auth/profile')
+        .then((res) => setUser(res.data))
+        .catch((err) => {
+          console.error('Auth profile error:', err);
+          localStorage.removeItem('token');
+          setUser(null);
+        });
+    }
   }, []);
 
   const logout = () => {
