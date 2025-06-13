@@ -2,22 +2,15 @@ import React from 'react';
 import {
   Container,
   Typography,
-  List,
-  ListItem,
-  ListItemText,
-  IconButton,
   TextField,
   Button,
-  Box,
-  Divider
+  Box
 } from '@mui/material';
-import { Delete } from '@mui/icons-material';
 import { useCart } from '../contexts/CartContext';
 
 const Cart = () => {
   const { cartItems, addToCart, removeFromCart } = useCart();
 
-  // ✅ Correct total: sum of (price * quantity)
   const total = cartItems.reduce(
     (sum, item) => sum + Number(item.price) * (item.quantity || 1),
     0
@@ -28,7 +21,6 @@ const Cart = () => {
     if (quantity <= 0 || isNaN(quantity)) {
       removeFromCart(item.id);
     } else {
-      // Re-add the item with updated quantity
       removeFromCart(item.id);
       addToCart({ ...item, quantity });
     }
@@ -44,35 +36,29 @@ const Cart = () => {
         <Typography>Your cart is empty.</Typography>
       ) : (
         <>
-          <List>
-            {cartItems.map((item) => (
-              <React.Fragment key={item.id}>
-                <ListItem
-                  secondaryAction={
-                    <IconButton edge="end" onClick={() => removeFromCart(item.id)}>
-                      <Delete />
-                    </IconButton>
-                  }
-                >
-                  <ListItemText
-                    primary={item.name}
-                    secondary={`₹${Number(item.price).toFixed(2)} each`}
-                  />
-                  <Box sx={{ ml: 2 }}>
-                    <TextField
-                      type="number"
-                      inputProps={{ min: 1 }}
-                      value={item.quantity}
-                      onChange={(e) => handleQuantityChange(item, e.target.value)}
-                      size="small"
-                      sx={{ width: '60px' }}
-                    />
-                  </Box>
-                </ListItem>
-                <Divider />
-              </React.Fragment>
-            ))}
-          </List>
+          {cartItems.map((item) => (
+            <Box key={item.id} sx={{ mb: 2, p: 2, border: '1px solid #ccc', borderRadius: 2 }}>
+              <Typography variant="h6">{item.name}</Typography>
+              <Typography>₹{Number(item.price).toFixed(2)} each</Typography>
+              <TextField
+                type="number"
+                label="Quantity"
+                inputProps={{ min: 1 }}
+                value={item.quantity}
+                onChange={(e) => handleQuantityChange(item, e.target.value)}
+                size="small"
+                sx={{ mt: 1, width: '100px' }}
+              />
+              <Button
+                variant="outlined"
+                color="secondary"
+                sx={{ ml: 2 }}
+                onClick={() => removeFromCart(item.id)}
+              >
+                Remove
+              </Button>
+            </Box>
+          ))}
 
           <Box sx={{ mt: 3, textAlign: 'right' }}>
             <Typography variant="h6">
@@ -80,7 +66,7 @@ const Cart = () => {
             </Typography>
             <Button
               variant="contained"
-              color="secondary"
+              color="primary"
               sx={{ mt: 2 }}
               onClick={() => alert('Proceeding to checkout...')}
             >

@@ -7,7 +7,6 @@ import { AuthProvider } from './contexts/AuthContext';
 import { CartProvider } from './contexts/CartContext';
 
 import Navbar from './components/Navbar';
-
 import Home from './pages/Home';
 import Products from './pages/Products';
 import Cart from './pages/Cart';
@@ -17,16 +16,16 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import PrivateRoute from './components/PrivateRoute';
 
-// Create a Material UI theme (customize it if you want)
+// Customize your MUI theme here
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1976d2' // Blue
+      main: '#1976d2', // Blue
     },
     secondary: {
-      main: '#f50057' // Pink/red for actions like remove
-    }
-  }
+      main: '#f50057', // Red/pink for accents like "remove"
+    },
+  },
 });
 
 function App() {
